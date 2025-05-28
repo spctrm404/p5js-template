@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- [수정] 페이지 제목 -->
+    <title>example</title>
+    <!-- [수정금지] 온라인에서 p5js 불러오기 -->
+    <script src="https://cdn.jsdelivr.net/npm/p5@2.0.1/lib/p5.js"></script>
+    <!-- [수정] 절대주소 활성화 -->
+    <script>
+      const repoName = 'p5js-template'; // 루트폴더 이름(= 프로젝트 이름; = 리포지토리 이름)을 입력
+      const isLocalhost =
+        location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+      const base = document.createElement('base');
+      base.href = isLocalhost ? '/' : `/${repoName}/`;
+      document.head.appendChild(base);
+    </script>
+    <!-- [수정금지] 템플릿 불러오기(절대주소) -->
+    <script src="/common/script/p5js-template.js"></script>
+    <!-- [수정금지] 스타일시트 불러오기(절대주소) -->
+    <link rel="stylesheet" href="/common/style/p5js-template.css" />
+    <!-- [수정금지] base 태그 무효화 -->
+    <script>
+      const isBaseExist = document.querySelector('base');
+      if (isBaseExist) {
+        isBaseExist.remove();
+        console.log(`p5js-template: base 태그가 제거되었습니다.`);
+      }
+    </script>
+    <!-- [수정] p5js 스케치 불러오기(상대주소); defer가 꼭 있어야 함 -->
+    <link rel="stylesheet" href="./style/style.css" />
+    <script src="./p5js/example.js" defer></script>
+  </head>
+  <body>
+    <div id="canvas-container"></div>
+  </body>
+</html>
