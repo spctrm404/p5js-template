@@ -1,5 +1,5 @@
 function setup() {
-  createResponsiveCanvas(800, 600, '#canvas-container', 'scale-down', false);
+  createResponsiveCanvas(800, 600, '#canvas-container', 'fill', false);
 }
 
 function draw() {

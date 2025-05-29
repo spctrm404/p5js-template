@@ -70,14 +70,13 @@ function getFitSize(canvasSize, containerSize, canvasFit = 'contain') {
  * @param {string} containerSelector - 캔버스를 넣을 컨테이너 요소의 CSS 선택자 문자열.
  * @param {'contain' | 'fill' | 'cover' | 'none' | 'scale-down'} [canvasFit='none'] - 캔버스가 컨테이너에 맞춰지는 방식:
  * - 'contain': 캔버스의 비율을 유지하면서 컨테이너 안에 완전히 들어가도록 크기를 조정.
- * - 'fill': 캔버스의 비율을 무시하고 컨테이너의 크기에 맞춤.
+ * - 'fill': 캔버스의 비율을 무시하고 컨테이너의 크기에 맞춤(staticCoordinate가 true일 경우 이미지가 왜곡됨).
  * - 'cover': 캔버스의 비율을 유지하면서 컨테이너를 완전히 덮도록 크기를 조정.
  * - 'none': 크기 조정을 하지 않음.
  * - 'scale-down': 캔버스가 컨테이너보다 클 때만 'contain'과 같은 방식으로 크기를 줄임.
  * @param {boolean} [staticCoordinate=true] - true면 캔버스 좌표계가 확장, 수축되지 않고, 렌더링된 이미지 크기가 확대, 축소됨(확대시 이미지 열화), false면 캔버스 좌표계가 확장, 수축(좌표계 변경에 대응되는 코딩 요구).
  * @returns {p5.Renderer | undefined} 생성된 p5.Renderer 객체 또는 오류 시 undefined 반환.
  */
-// need to implment canvasFit 'fill'
 function createResponsiveCanvas(
   width,
   height,
@@ -107,7 +106,7 @@ function createResponsiveCanvas(
       return;
     }
   }
-  if (!['contain', 'cover', 'none', 'scale-down'].includes(canvasFit)) {
+  if (!['contain', 'fill', 'cover', 'none', 'scale-down'].includes(canvasFit)) {
     console.error(
       `@${functionName}(): 4번째 매개변수 canvasFit은 "contain", "cover", "none", "scale-down" 중 하나여야 합니다.`
     );
@@ -169,6 +168,14 @@ function createResponsiveCanvas(
   return renderer;
 }
 
+/**
+ * 주어진 값이 색상으로 간주될 수 있는지 확인.
+ *
+ * 숫자, 문자열, 숫자 배열을 유효한 색상 표현으로 허용.
+ *
+ * @param {*} value - 확인할 값.
+ * @returns {boolean} 값이 숫자, 문자열, 또는 숫자 배열이면 true, 그렇지 않으면 false.
+ */
 function isColor(value) {
   return (
     typeof value === 'number' ||
@@ -180,13 +187,15 @@ function isColor(value) {
 }
 
 /**
- * 다양한 색상 입력 형식을 p5.Color로 변환합니다.
+ * 캔버스에 기준선, 중앙선, 경계선을 포함한 참조 그리드를 그립니다.
  *
- * @param {number | string | number[]} boundaryColour - 경계선 색상
- * @param {number | string | number[]} gridColour - 경계선 색상
- * @param {number | string | number[]} centerColour - 경계선 색상
+ * @param {number} [gridSize=20] - 그리드 간격(픽셀).
+ * @param {(number|string|Array)} [boundaryColour='#000000'] - 경계선의 색상. 숫자, 색상 문자열, 숫자 배열을 허용.
+ * @param {(number|string|Array)} [gridColour='#888888'] - 격자선의 색상. 숫자, 색상 문자열, 숫자 배열을 허용.
+ * @param {(number|string|Array)} [centerColour='red'] - 중심선의 색상. 숫자, 색상 문자열, 숫자 배열을 허용.
  */
 function drawReferenceGrid(
+  gridSize = 20,
   boundaryColour = '#000000',
   gridColour = '#888888',
   centerColour = 'red'
@@ -202,7 +211,6 @@ function drawReferenceGrid(
     );
     return;
   }
-  const gridSize = 20;
   noFill();
   stroke(gridColour);
   strokeWeight(1);
