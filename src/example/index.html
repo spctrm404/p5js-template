@@ -32,6 +32,11 @@
         console.log(`p5js-template: base 태그가 제거되었습니다.`);
       }
     </script>
+    <!-- [수정 금지] Material Symbols 불러오기 -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+      rel="stylesheet"
+    />
 
     <!-- [선택 수정] 스타일시트 불러오기(상대주소) -->
     <link rel="stylesheet" href="./style/style.css" />
@@ -39,6 +44,30 @@
     <script src="./p5js/example.js" defer></script>
   </head>
   <body>
-    <div id="canvas-container"></div>
+    <main>
+      <section class="section section--canvas"></section>
+      <section class="section section--control">
+        <div class="container control__container">
+          <div class="control__label">
+            <h1 class="control__title">여기 작품제목이 들어갑니다.</h1>
+            <h2 class="control__artist">손우성</h2>
+          </div>
+          <div class="control__paging">
+            <button class="button control__button control__button--prev">
+              <span class="material-symbols-outlined">arrow_back_ios_new</span>
+              <span class="button__label">to previous</span>
+            </button>
+            <button class="button control__button control__button--next">
+              <span class="material-symbols-outlined">arrow_forward_ios</span>
+              <span class="button__label">to next</span>
+            </button>
+            <button class="button control__button control__button--list">
+              <span class="material-symbols-outlined">grid_view</span>
+              <span class="button__label">to list</span>
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
   </body>
 </html>
