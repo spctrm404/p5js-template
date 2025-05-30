@@ -7,9 +7,7 @@
 
 /* Prevent font size inflation */
 html {
-  -webkit-text-size-adjust: none;
-     -moz-text-size-adjust: none;
-          text-size-adjust: none;
+  text-size-adjust: none;
 }
 
 /* Remove default margin in favour of better control in authored CSS */
@@ -27,8 +25,8 @@ dd {
 }
 
 /* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
-ul[role=list],
-ol[role=list] {
+ul[role='list'],
+ol[role='list'] {
   list-style: none;
 }
 
@@ -77,8 +75,7 @@ h6 {
 
 /* A elements that don't have a class get default styles */
 a:not([class]) {
-  -webkit-text-decoration-skip: ink;
-          text-decoration-skip-ink: auto;
+  text-decoration-skip-ink: auto;
   color: currentcolor;
 }
 
@@ -117,6 +114,7 @@ textarea:not([rows]) {
 /* template */
 :root {
   color-scheme: light dark;
+
   --bg: light-dark(#f8f8f8, #161616);
   --secondary: light-dark(#e7e7e7, #3f3f3f);
   --on-secondary: light-dark(#3a3a3a, #e6e6e6);
@@ -125,16 +123,19 @@ textarea:not([rows]) {
 }
 
 /* stylelint-disable-next-line no-duplicate-selectors */
+html {
+}
+
 /* stylelint-disable-next-line no-duplicate-selectors */
 body {
   margin: 0;
-  font-family: "Pretendard Variable", sans-serif;
+  font-family: 'Pretendard Variable', sans-serif;
   color: var(--on-bg);
   background-color: var(--bg);
 }
 
 .material-symbols-outlined {
-  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
 
 .button {
@@ -150,45 +151,54 @@ body {
   cursor: pointer;
   background-color: transparent;
   border: none;
-}
-.button > * {
-  grid-row: 1/1;
-  grid-column: 1/1;
-}
-.button::before, .button::after {
-  display: block;
-  grid-row: 1/1;
-  grid-column: 1/1;
-  width: 2.5rem;
-  height: 2.5rem;
-  content: "";
-  border-radius: 1024rem;
-  transform: scale(0);
-}
-.button::after {
-  position: relative;
-  z-index: 1;
-  background-color: var(--secondary);
-}
-.button::before {
-  position: relative;
-  z-index: 2;
-  background-color: var(--state);
-}
-.button__icon {
-  position: relative;
-  z-index: 3;
-}
-.button__label {
-  display: none;
-}
-.button:hover::after {
-  transform: scale(1);
-  transition: transform 100ms ease-in;
-}
-.button:active::before {
-  transform: scale(1);
-  transition: transform 100ms ease-in;
+
+  > * {
+    grid-row: 1 / 1;
+    grid-column: 1 / 1;
+  }
+
+  &::before,
+  &::after {
+    display: block;
+    grid-row: 1 / 1;
+    grid-column: 1 / 1;
+    width: 2.5rem;
+    height: 2.5rem;
+    content: '';
+    border-radius: 1024rem;
+    transform: scale(0);
+  }
+
+  &::after {
+    position: relative;
+    z-index: 1;
+    background-color: var(--secondary);
+  }
+
+  &::before {
+    position: relative;
+    z-index: 2;
+    background-color: var(--state);
+  }
+
+  &__icon {
+    position: relative;
+    z-index: 3;
+  }
+
+  &__label {
+    display: none;
+  }
+
+  &:hover::after {
+    transform: scale(1);
+    transition: transform 100ms ease-in;
+  }
+
+  &:active::before {
+    transform: scale(1);
+    transition: transform 100ms ease-in;
+  }
 }
 
 .section {
@@ -209,95 +219,112 @@ body {
   display: grid;
   grid-template-rows: 1fr;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  -moz-column-gap: 3rem;
-       column-gap: 3rem;
+  column-gap: 3rem;
   place-items: center center;
   max-width: 90rem;
   height: 100%;
   padding-block: 0.25rem;
   margin-inline: auto;
-}
-.control__label {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  place-self: center stretch;
-  align-items: stretch;
-  justify-content: center;
-}
-.control__label > * {
-  flex: 0 1 auto;
-}
-.control__title {
-  margin: 0;
-  overflow-x: clip;
-  text-overflow: ellipsis;
-  font-size: 1.125rem;
-  font-weight: 600;
-  line-height: 1;
-  white-space: nowrap;
-}
-.control__artist {
-  width: 100%;
-  margin: 0;
-  overflow: hidden;
-  font-size: 1rem;
-  font-weight: 500;
-  line-height: 1;
-}
-.control__paging {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.control__paging > * {
-  flex: 0 0 auto;
-}
-.control__button--prev {
-  order: 0;
-}
-.control__button--list {
-  order: 1;
-}
-.control__button--next {
-  order: 2;
-}
-.control__button--folding {
-  place-self: center end;
-  transition: transform 150ms ease-in;
-}
-.control__button--folding[data-folded=true] {
-  transform: rotate(0deg);
-}
-.control__button--folding[data-folded=false] {
-  transform: rotate(-180deg);
+
+  &__label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    place-self: center stretch;
+    align-items: stretch;
+    justify-content: center;
+
+    > * {
+      flex: 0 1 auto;
+    }
+  }
+
+  &__title {
+    margin: 0;
+    overflow-x: clip;
+    text-overflow: ellipsis;
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  &__artist {
+    width: 100%;
+    margin: 0;
+    overflow: hidden;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  &__paging {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    > * {
+      flex: 0 0 auto;
+    }
+  }
+
+  &__button {
+    &--prev {
+      order: 0;
+    }
+
+    &--list {
+      order: 1;
+    }
+
+    &--next {
+      order: 2;
+    }
+
+    &--folding {
+      place-self: center end;
+      transition: transform 150ms ease-in;
+
+      &[data-folded='true'] {
+        transform: rotate(0deg);
+      }
+
+      &[data-folded='false'] {
+        transform: rotate(-180deg);
+      }
+    }
+  }
 }
 
 .description {
   max-width: 49.5rem;
-}
-.description__title {
-  max-width: 75%;
-  margin: 0;
-  font-size: 1.5rem;
-  font-weight: 600;
-  line-height: 1.2;
-  text-wrap: balance;
-}
-.description__artist {
-  width: 100%;
-  margin: 0;
-  margin-top: 0.7rem;
-  overflow: hidden;
-  font-size: 1.125rem;
-  font-weight: 500;
-  line-height: 1;
-}
-.description p {
-  margin-top: 0.5lh;
-  font-size: 1.125rem;
-  word-break: keep-all;
-}
-.description p:first-of-type {
-  margin-top: 1lh;
+
+  &__title {
+    max-width: 75%;
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+
+  &__artist {
+    width: 100%;
+    margin: 0;
+    margin-top: calc(1rem - 0.3rem);
+    overflow: hidden;
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  p {
+    margin-top: 0.5lh;
+    font-size: 1.125rem;
+    word-break: keep-all;
+
+    &:first-of-type {
+      margin-top: 1lh;
+    }
+  }
 }

@@ -21,7 +21,7 @@
     </script>
 
     <!-- [수정 금지] 템플릿 불러오기(절대주소) -->
-    <script src="/common/script/p5js-template.js"></script>
+    <script src="/common/script/p5js-template.js" defer></script>
     <!-- [수정 금지] 스타일시트 불러오기(절대주소) -->
     <link rel="stylesheet" href="/common/style/p5js-template.css" />
     <!-- [수정 금지] base 태그 무효화 -->
@@ -37,6 +37,13 @@
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
       rel="stylesheet"
     />
+    <!-- [수정 금지] pretendard 폰트 불러오기 -->
+    <link
+      rel="stylesheet"
+      as="style"
+      crossorigin
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+    />
 
     <!-- [선택 수정] 스타일시트 불러오기(상대주소) -->
     <link rel="stylesheet" href="./style/style.css" />
@@ -45,27 +52,126 @@
   </head>
   <body>
     <main>
-      <section class="section section--canvas"></section>
-      <section class="section section--control">
-        <div class="container control__container">
+      <section class="section">
+        <div id="canvas-container" class="container"></div>
+      </section>
+      <section class="section section--info">
+        <div class="container info__container control">
           <div class="control__label">
-            <h1 class="control__title">여기 작품제목이 들어갑니다.</h1>
-            <h2 class="control__artist">손우성</h2>
+            <h1 class="title control__title">여기 작품제목이 들어갑니다.</h1>
+            <h2 class="artist control__artist">손우성</h2>
           </div>
           <div class="control__paging">
-            <button class="button control__button control__button--prev">
-              <span class="material-symbols-outlined">arrow_back_ios_new</span>
+            <button
+              id="btn-prev"
+              class="button control__button control__button--prev"
+            >
+              <span class="button__icon material-symbols-outlined"
+                >arrow_back_ios_new</span
+              >
               <span class="button__label">to previous</span>
             </button>
-            <button class="button control__button control__button--next">
-              <span class="material-symbols-outlined">arrow_forward_ios</span>
+            <button
+              id="btn-next"
+              class="button control__button control__button--next"
+            >
+              <span class="button__icon material-symbols-outlined"
+                >arrow_forward_ios</span
+              >
               <span class="button__label">to next</span>
             </button>
-            <button class="button control__button control__button--list">
-              <span class="material-symbols-outlined">grid_view</span>
+            <button
+              id="btn-list"
+              class="button control__button control__button--list"
+            >
+              <span class="button__icon material-symbols-outlined"
+                >grid_view</span
+              >
               <span class="button__label">to list</span>
             </button>
           </div>
+          <button
+            id="btn-folding"
+            class="button control__button control__button--folding"
+            data-folded="true"
+          >
+            <span class="button__icon material-symbols-outlined"
+              >arrow_drop_up</span
+            >
+            <span class="button__label">to list</span>
+          </button>
+        </div>
+        <div class="container info__container description">
+          <div class="title description__title">
+            대할 지구는 넓습니다 봄 도모할수록 때가 고꾸라진 없다 퍼렇다 냉정
+            수치스럽습니다.
+          </div>
+          <div class="artist description__artist">손우성</div>
+          <p>
+            우리는 그 이러하다 그리고 이라고 버리다. 수 드넓을 당첨을 상관관계를
+            안 하나도, 기록한 5시 향한다. 염산의 유배지만 곡선의 난산을,
+            다녀가아서 결혼하지 한다. 뿐 보통에 음 연주자를 씨 색깔만 병이다
+            알면서, 한 하여금 움직이다. 나의 동안으로서 잃음 여보세요 처방은
+            동안 크다. 살펴보고자 우편도, 불감증을 351미터 한 잃다.
+          </p>
+          <p>
+            환경을 인구를 아무래도 17개 특징적에서 허용한 정도도 두 사용하고
+            하라. 변화에 수비력에 바뀌다 때문 이백 치러지다 단호하다. 내니
+            허무하자면 일컬어진 소중하여서 이때의 나온다. 고양이가 그런 그 차다
+            2027년 자본주의에 어떤 아프며 제대로 가엾어라. 변화와 여성으로써
+            나오자, 테이프가 불안하면 위의 말씀한다. 비틀어지면서 사람에서
+            교과서가 것 황송하다 가운은 못하기 뿐, 타월을 문화를 지키다.
+          </p>
+          <p>
+            오이다 이농을 테이블이 살며시, 아파트다 가진 일에 말하는 모자에서
+            꾀하는구나. 아침이다 잠시 타도까지 닦는다 검찰의 위반하여 소원의
+            사회적을 한데의 만난다. 증폭시키지 한 간단히 판다 얻을지, 정한
+            산업이 관심은 쉽다니. 그 정도 연결하다 국가는 수 보다. 무엇을
+            그렇은데 기준에 짝짝 변화와 여전히 그러나 하다. 생각을 매개를 월, 데
+            우수합니까.
+          </p>
+          <p>
+            공백도 사소하여야 결과는 하라고 전진처럼 오아. 아직 그래 타아서
+            재산도 주다 의심하니 있으냐. 어리다 수 않다 아들과 하다. 의하여
+            지하의 목적의 오히려, 생기는 있은 위하려 사람의 틀을 빼앗다. 장군이
+            텃새는 그도, 수 민에 이상으로 나에 일어서다. 놓인 발을 등장하다 대개
+            있다. 힘의 구름은, 세기에게 것 쓰이기 것 많이 현재 엊그제의 뵈다.
+          </p>
+          <p>
+            제시하다 되는 지역을 연기가 수매에서 무슨 너무 지배적은 있으소.
+            휩싸이고 부분만 아무 지나야 침해가 봅니다, 말고 활용에서 없다 내놓아
+            풀려납니다. 나오다 십 남편의 공부로 여우가 어떤 17초 어떻지 면하다.
+            다니라 깊다 기술합니다, 결코 사진은 바 검다. 건축가에게 낳고 마침
+            않으면 십, 어느새 하다. 낚시터를 식이, 늘어나다 다정하여야 가게를
+            그런 뭉뚱그리다 끝내다 실시하다. 버섯은 일이 농촌 간 성큼 거 잘사오.
+            외적은 잔 많이 관하고 15일 있고 보리라. 요즘 가루로 통하는 먼저
+            연결은 둘째에 잘못의 것 가진 하자.
+          </p>
+          <p>
+            쓰어 이번이 알려진 집행하고는 주라 씨름이 전망에 군인이도록 보다
+            세기는 무섭다. 모의고사를 기능주의적 사람으로서 못하여서 마을이
+            음식업만 그러려고 2026년 재산의 요구한다. 예전이 순간이 나아 화초로
+            노출시키듯 적당하는 아니다. 모두 그 씨 침엽수림의 짚다. 기여하여서
+            겪고 인식이 일회용의 존재한다.
+          </p>
+          <p>
+            물건에 강행한 높이어 하고 부족하여서 대하여요. 새끼의 되어 되기
+            발표와 있으며 알다. 회전 나도 소비자는 물도 뚫지 나오에요. 입주엔
+            그러나 있는 느껴지라 하게 하다. 날개는 물론 놈 만족스럽다, 그렇을 새
+            후반을 듯 생각하소. 뛰어 우리말의 한집은 하여서 그, 있으냐고. 그림은
+            우리나라의 학생인 수, 돈이 보고 자세히 거 둘게. 예정에 제도는 모이다
+            불리어야, 수 먹야. 점은 시까지 있어 기른 예가 일을 좋던가
+            불가능하구나.
+          </p>
+          <p>
+            그러나 그나 원인의 같이 위한 경제는 1분 추태는 데 어느 늘어나다.
+            의미는 것 다방은 샌드위치를 고려한 눈 해내냐 배제될 시간은 공통된다.
+            배울 역사를 대한 덧붙인 아니면서 되어, 실권의 그리고 주 의경이
+            생각하네. 집단이 회귀하여 언제 눈앞은 하여서 경우의 인정할 못하다 등
+            있다. 현재다 일반으로 가닥을 최고봉을 쓴, 사람이 열고 몰래, 있어
+            포함이 당하자. 가진 효과가 든 방식에, 하루에 착공은 보고하자.
+            목소리는 때에 자기는 두 준 집은 더구나, 묻습니다, 이렇다.
+          </p>
         </div>
       </section>
     </main>

@@ -1,3 +1,9 @@
+const btnFolding = document.getElementById('btn-folding');
+btnFolding.addEventListener('click', () => {
+  btnFolding.dataset.folded =
+    btnFolding.dataset.folded === 'true' ? 'false' : 'true';
+});
+
 /**
  * 지정된 맞춤 방식에 따라 캔버스를 컨테이너에 최적으로 맞추기 위한 크기를 반환.
  *
@@ -67,7 +73,7 @@ function getFitSize(canvasSize, containerSize, canvasFit = 'contain') {
  *
  * @param {number} width - 캔버스의 기준 너비(픽셀, 양의 정수).
  * @param {number} height - 캔버스의 기준 높이(픽셀, 양의 정수).
- * @param {string} containerSelector - 캔버스를 넣을 컨테이너 요소의 CSS 선택자 문자열.
+ * @param {string} containerId - 캔버스를 넣을 컨테이너 요소의 id 문자열.
  * @param {'contain' | 'fill' | 'cover' | 'none' | 'scale-down'} [canvasFit='none'] - 캔버스가 컨테이너에 맞춰지는 방식:
  * - 'contain': 캔버스의 비율을 유지하면서 컨테이너 안에 완전히 들어가도록 크기를 조정.
  * - 'fill': 캔버스의 비율을 무시하고 컨테이너의 크기에 맞춤(staticCoordinate가 true일 경우 이미지가 왜곡됨).
@@ -80,7 +86,7 @@ function getFitSize(canvasSize, containerSize, canvasFit = 'contain') {
 function createResponsiveCanvas(
   width,
   height,
-  containerSelector,
+  containerId,
   canvasFit = 'none',
   staticCoordinate = true
 ) {
@@ -92,16 +98,16 @@ function createResponsiveCanvas(
     );
     return;
   }
-  if (typeof containerSelector !== 'string') {
+  if (typeof containerId !== 'string') {
     console.error(
-      `@${functionName}(): 3번째 매개변수 containerSelector는 캔버스의 부모 요소를 지목하는 CSS 선택자여야합니다.`
+      `@${functionName}(): 3번째 매개변수 containerId는 캔버스의 부모 요소를 지목하는 id여야합니다.`
     );
     return;
   } else {
-    container = document.body.querySelector(containerSelector);
+    container = document.getElementById(containerId);
     if (!container) {
       console.error(
-        `@${functionName}(): "${containerSelector}"와 일치하는 HTML 요소가 없습니다. 3번째 매개변수 containerSelector를 확인하세요.`
+        `@${functionName}(): "${containerId}"와 일치하는 HTML 요소가 없습니다. 3번째 매개변수 containerId를 확인하세요.`
       );
       return;
     }
@@ -160,7 +166,7 @@ function createResponsiveCanvas(
   console.log(
     `@${functionName}(): 캔버스가 생성되었습니다.
 - 캔버스 크기: ${finalSize.width}x${finalSize.height}px
-- 컨테이너: ${containerSelector}
+- 컨테이너: ${containerId}
 - 캔버스 맞춤 방식: ${canvasFit}
 - 고정 좌표계: ${staticCoordinate}`
   );
@@ -189,16 +195,16 @@ function isColor(value) {
 /**
  * 캔버스에 기준선, 중앙선, 경계선을 포함한 참조 그리드를 그립니다.
  *
- * @param {number} [gridSize=20] - 그리드 간격(픽셀).
  * @param {(number|string|Array)} [boundaryColour='#000000'] - 경계선의 색상. 숫자, 색상 문자열, 숫자 배열을 허용.
  * @param {(number|string|Array)} [gridColour='#888888'] - 격자선의 색상. 숫자, 색상 문자열, 숫자 배열을 허용.
  * @param {(number|string|Array)} [centerColour='red'] - 중심선의 색상. 숫자, 색상 문자열, 숫자 배열을 허용.
+ * @param {number} [gridSize=20] - 그리드 간격(픽셀).
  */
 function drawReferenceGrid(
-  gridSize = 20,
   boundaryColour = '#000000',
   gridColour = '#888888',
-  centerColour = 'red'
+  centerColour = 'red',
+  gridSize = 20
 ) {
   const functionName = 'drawReferenceGrid';
   if (

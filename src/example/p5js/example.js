@@ -1,9 +1,9 @@
 function setup() {
-  createResponsiveCanvas(800, 600, '#canvas-container', 'fill', false);
+  createResponsiveCanvas(800, 600, 'canvas-container', 'fill', false);
 }
 
 function draw() {
-  drawReferenceGrid();
+  drawReferenceGrid('#ffffff');
 }
 
 function windowResized() {}
