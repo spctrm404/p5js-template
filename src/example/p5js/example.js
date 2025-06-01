@@ -6,4 +6,6 @@ function draw() {
   drawReferenceGrid('#ffffff');
 }
 
-function windowResized() {}
+function mouseWheel() {
+  console.log('wheel');
+}

@@ -117,20 +117,36 @@ textarea:not([rows]) {
 /* template */
 :root {
   color-scheme: light dark;
-  --bg: light-dark(#f8f8f8, #161616);
-  --secondary: light-dark(#e7e7e7, #3f3f3f);
-  --on-secondary: light-dark(#3a3a3a, #e6e6e6);
-  --state: light-dark(#4b4b4b, #e6e6e6);
-  --on-bg: light-dark(#404040, #ededed);
+  --bg: light-dark(#f8f8f8, oklch(18% 0 0deg));
+  --on-bg: light-dark(#404040, oklch(96.73% 0 0deg));
+  --on-bg-var: light-dark(#404040, oklch(89.45% 0 0deg));
+  --outline: light-dark(#404040, oklch(76.2% 0 0deg));
+  --outline-var: light-dark(#404040, oklch(56.75% 0 0deg));
+  --primary: light-dark(#e7e7e7, oklch(86.98% 0 0deg));
+  --primary-state-08: light-dark(#4b4b4b, oklch(86.98% 0 0deg / 8%));
+  --primary-state-12: light-dark(#4b4b4b, oklch(86.98% 0 0deg / 12%));
+  --primary-state-16: light-dark(#4b4b4b, oklch(86.98% 0 0deg / 16%));
+  --on-primay: light-dark(#3a3a3a, oklch(18.88% 0 0deg));
 }
 
 /* stylelint-disable-next-line no-duplicate-selectors */
+html {
+  height: 100%;
+}
+
 /* stylelint-disable-next-line no-duplicate-selectors */
 body {
+  height: 100%;
   margin: 0;
   font-family: "Pretendard Variable", sans-serif;
   color: var(--on-bg);
   background-color: var(--bg);
+}
+
+main {
+  height: 100%;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
 }
 
 .material-symbols-outlined {
@@ -138,7 +154,6 @@ body {
 }
 
 .button {
-  position: relative;
   display: grid;
   grid-template-rows: 1fr;
   grid-template-columns: 1fr;
@@ -146,7 +161,7 @@ body {
   width: 3rem;
   height: 3rem;
   padding: 0;
-  color: var(--on-secondary);
+  color: var(--on-bg-var);
   cursor: pointer;
   background-color: transparent;
   border: none;
@@ -164,16 +179,17 @@ body {
   content: "";
   border-radius: 1024rem;
   transform: scale(0);
+  transition: background-color 200ms ease-in, transform 200ms ease-in;
 }
 .button::after {
   position: relative;
   z-index: 1;
-  background-color: var(--secondary);
+  background-color: var(--primary-state-08);
 }
 .button::before {
   position: relative;
   z-index: 2;
-  background-color: var(--state);
+  background-color: transparent;
 }
 .button__icon {
   position: relative;
@@ -184,38 +200,79 @@ body {
 }
 .button:hover::after {
   transform: scale(1);
-  transition: transform 100ms ease-in;
 }
-.button:active::before {
+.button:active::after {
+  background-color: var(--primary-state-12);
   transform: scale(1);
-  transition: transform 100ms ease-in;
 }
 
 .section {
   padding-inline: 5rem;
 }
+@media (width <= 75rem) {
+  .section {
+    padding-inline: 3.75rem;
+  }
+}
+@media (width <= 52.5rem) {
+  .section {
+    padding-inline: 1.5rem;
+  }
+}
+@media (width <= 37.5rem) {
+  .section {
+    padding-inline: 1rem;
+  }
+}
 
 .container {
+  max-width: 90rem;
   margin-inline: auto;
+}
+
+.canvas[data-full-width=true] {
+  padding-inline: 0;
 }
 
 #canvas-container {
-  max-width: 90rem;
-  height: calc(100svh - 3.5rem);
+  height: calc(100vh - 3.5rem);
   background-color: aquamarine;
+}
+.canvas[data-full-width=true] #canvas-container {
+  max-width: 100%;
 }
 
 .control {
+  position: sticky;
+  top: 0;
+  display: grid;
+  grid-template-rows: 3rem 0.5rem 0.5rem 3rem;
+  grid-template-columns: 1fr;
+}
+.control[data-full-width=true] {
+  padding-inline: 0;
+}
+.control__container--header {
+  position: relative;
+  z-index: 2;
   display: grid;
   grid-template-rows: 1fr;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  -moz-column-gap: 3rem;
-       column-gap: 3rem;
-  place-items: center center;
-  max-width: 90rem;
+  grid-row: 1/span 2;
+  grid-column: 1/-1;
+  -moz-column-gap: 1.5rem;
+       column-gap: 1.5rem;
+  width: 100%;
+  background-color: var(--bg);
+}
+.control__container--footer {
+  position: relative;
+  z-index: 1;
+  grid-row: 2/-1;
+  grid-column: 1/-1;
+  width: 100%;
   height: 100%;
-  padding-block: 0.25rem;
-  margin-inline: auto;
+  background: linear-gradient(to bottom, var(--bg) 0%, var(--bg) 25%, transparent 100%);
 }
 .control__label {
   display: flex;
@@ -224,24 +281,34 @@ body {
   place-self: center stretch;
   align-items: stretch;
   justify-content: center;
+  opacity: 1;
+  transition: opacity 200ms ease-in;
 }
+@media (width <= 52.5rem) {
+  .control__label {
+    opacity: 0;
+  }
+}
+.control[data-at-bottom=false] .control__label {
+  opacity: 0;
+}
+
 .control__label > * {
-  flex: 0 1 auto;
+  flex: 1 1 auto;
 }
-.control__title {
-  margin: 0;
+.control__label__title {
   overflow-x: clip;
   text-overflow: ellipsis;
-  font-size: 1.125rem;
+  font-size: 1rem;
   font-weight: 600;
   line-height: 1;
   white-space: nowrap;
 }
-.control__artist {
-  width: 100%;
+.control__label__artist {
   margin: 0;
-  overflow: hidden;
-  font-size: 1rem;
+  overflow-x: clip;
+  text-overflow: ellipsis;
+  font-size: 0.875rem;
   font-weight: 500;
   line-height: 1;
 }
@@ -262,42 +329,145 @@ body {
 .control__button--next {
   order: 2;
 }
-.control__button--folding {
-  place-self: center end;
-  transition: transform 150ms ease-in;
-}
-.control__button--folding[data-folded=true] {
+.control__button--scroll {
   transform: rotate(0deg);
+  transition: transform 200ms ease-in;
 }
-.control__button--folding[data-folded=false] {
-  transform: rotate(-180deg);
+.control[data-at-bottom=false] .control__button--scroll {
+  transform: rotate(180deg);
 }
 
-.description {
-  max-width: 49.5rem;
+.control__scroll {
+  display: flex;
+  align-items: center;
+  justify-content: end;
 }
-.description__title {
-  max-width: 75%;
+.control__scroll > * {
+  flex: 0 0 auto;
+}
+
+.information__container {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  -moz-column-gap: 1.5rem;
+       column-gap: 1.5rem;
+  place-items: stretch stretch;
+  padding-bottom: 7rem;
+}
+.information__label {
+  grid-row: 1/span 1;
+  grid-column: 1/span 7;
+  padding-right: 3rem;
+}
+@media (width <= 75rem) {
+  .information__label {
+    grid-column: 1/-1;
+  }
+}
+@media (width <= 52.5rem) {
+  .information__label {
+    padding-right: 0;
+  }
+}
+.information__label__title {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 2.25rem;
   font-weight: 600;
-  line-height: 1.2;
+  line-height: 1.4;
+  word-break: keep-all;
   text-wrap: balance;
 }
-.description__artist {
-  width: 100%;
-  margin: 0;
-  margin-top: 0.7rem;
-  overflow: hidden;
-  font-size: 1.125rem;
+@media (width <= 52.5rem) {
+  .information__label__title {
+    font-size: 1.375rem;
+  }
+}
+.information__label__artist {
+  margin-top: 0.6rem;
+  margin-bottom: 2.25rem;
+  font-size: 1.5625rem;
   font-weight: 500;
   line-height: 1;
 }
-.description p {
+@media (width <= 52.5rem) {
+  .information__label__artist {
+    margin-top: 0.45rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.125rem;
+  }
+}
+.information__description {
+  grid-row: 2/span 1;
+  grid-column: 1/span 7;
+  padding-right: 3rem;
+}
+@media (width <= 75rem) {
+  .information__description {
+    grid-column: 1/-1;
+  }
+}
+@media (width <= 52.5rem) {
+  .information__description {
+    padding-right: 0;
+  }
+}
+.information__description p {
   margin-top: 0.5lh;
   font-size: 1.125rem;
   word-break: keep-all;
 }
-.description p:first-of-type {
-  margin-top: 1lh;
+@media (width <= 52.5rem) {
+  .information__description p {
+    font-size: 1rem;
+    word-break: normal;
+  }
+}
+.information__description p:first-of-type {
+  margin-top: 0;
+}
+.information__reference {
+  position: relative;
+  grid-row: 2/span 1;
+  grid-column: 8/-1;
+}
+@media (width <= 75rem) {
+  .information__reference {
+    grid-row: 3/span 1;
+    grid-column: 1/-1;
+    padding-right: 3rem;
+    margin-top: 1.5rem;
+  }
+}
+@media (width <= 52.5rem) {
+  .information__reference {
+    padding-right: 0;
+  }
+}
+.information__reference__wrap {
+  position: sticky;
+  top: 7rem;
+}
+.information__reference__title {
+  margin: 0;
+  font-size: 1.5625rem;
+  font-weight: 600;
+  line-height: 1;
+}
+.information__reference ol {
+  padding-left: 2.5em;
+  margin-top: 1em;
+  margin-bottom: 0;
+  font-size: 1.125rem;
+  line-height: 1.5;
+}
+@media (width <= 52.5rem) {
+  .information__reference ol {
+    font-size: 1rem;
+  }
+}
+.information__reference ol li {
+  margin-top: 0.25lh;
+}
+.information__reference ol li:first-of-type {
+  margin-top: 0;
 }

@@ -1,7 +1,80 @@
-const btnFolding = document.getElementById('btn-folding');
-btnFolding.addEventListener('click', () => {
-  btnFolding.dataset.folded =
-    btnFolding.dataset.folded === 'true' ? 'false' : 'true';
+const main = document.getElementById('main');
+const sectionCanvas = document.getElementById('section-canvas');
+const sectionControl = document.getElementById('section-control');
+const sectionInformation = document.getElementById('section-information');
+
+function disableScroll(elem) {
+  elem.addEventListener(
+    'wheel',
+    (e) => {
+      e.preventDefault();
+    },
+    { passive: false }
+  );
+  elem.addEventListener(
+    'touchmove',
+    (e) => {
+      e.preventDefault();
+    },
+    { passive: false }
+  );
+}
+
+disableScroll(sectionCanvas);
+disableScroll(sectionControl);
+
+let canvasInPrevState = 'in';
+const canvasInObserver = new IntersectionObserver(
+  ([entry]) => {
+    if (entry.isIntersecting) {
+      // console.log('Intersecting:', entry.target.id, entry.intersectionRatio);
+      if (canvasInPrevState === 'out') {
+        sectionCanvas.scrollIntoView({ behavior: 'smooth' });
+        sectionControl.dataset.atBottom = 'true';
+      }
+      canvasInPrevState = 'in';
+    } else {
+      // console.log('NotIntersecting:', entry.target.id, entry.intersectionRatio);
+      canvasInPrevState = 'out';
+    }
+  },
+  {
+    threshold: [0, 1],
+    rootMargin: '-4px 0px 0px 0px',
+  }
+);
+canvasInObserver.observe(sectionCanvas);
+
+let canvasOutPrevState = 'in';
+const canvasOutObserver = new IntersectionObserver(
+  ([entry]) => {
+    if (entry.isIntersecting) {
+      if (entry.intersectionRatio === 1) {
+        canvasOutPrevState = 'in';
+      } else {
+        if (canvasOutPrevState === 'in') {
+          sectionControl.scrollIntoView({ behavior: 'smooth' });
+          sectionControl.dataset.atBottom = 'false';
+        }
+        canvasOutPrevState = 'out';
+      }
+    }
+  },
+  {
+    threshold: [0, 1],
+    rootMargin: '0px 0px 0px 0px',
+  }
+);
+canvasOutObserver.observe(sectionCanvas);
+
+const btnScroll = document.getElementById('button-scroll');
+btnScroll.addEventListener('click', () => {
+  const atBottom = sectionControl.dataset.atBottom === 'true';
+  if (atBottom) {
+    sectionControl.scrollIntoView({ behavior: 'smooth' });
+  } else {
+    sectionCanvas.scrollIntoView({ behavior: 'smooth' });
+  }
 });
 
 /**
@@ -147,18 +220,16 @@ function createResponsiveCanvas(
 
   if (canvasFit === 'none') return renderer;
 
-  const resizeObserver = new ResizeObserver((entries) => {
-    for (const entry of entries) {
-      if (entry.target === container) {
-        const { width: canvasWidth, height: canvasHeight } = getFitSize(
-          { width, height },
-          entry.target.getBoundingClientRect(),
-          canvasFit
-        );
-        if (!staticCoordinate) resizeCanvas(canvasWidth, canvasHeight);
-        renderer.elt.style.width = `${canvasWidth}px`;
-        renderer.elt.style.height = `${canvasHeight}px`;
-      }
+  const resizeObserver = new ResizeObserver(([entry]) => {
+    if (entry.target === container) {
+      const { width: canvasWidth, height: canvasHeight } = getFitSize(
+        { width, height },
+        entry.target.getBoundingClientRect(),
+        canvasFit
+      );
+      if (!staticCoordinate) resizeCanvas(canvasWidth, canvasHeight);
+      renderer.elt.style.width = `${canvasWidth}px`;
+      renderer.elt.style.height = `${canvasHeight}px`;
     }
   });
   resizeObserver.observe(container);
