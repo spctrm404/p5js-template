@@ -13,8 +13,9 @@
     <!-- [필수 수정] 절대주소 활성화 -->
     <script>
       const repoName = 'p5js-template'; // [이 부분만 수정] 루트폴더 이름(= 프로젝트 이름; = 리포지토리 이름)을 입력
-      const isLocalhost =
-        location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+      // const isLocalhost =
+      //   location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+      const isLocalhost = false;
       const base = document.createElement('base');
       base.href = isLocalhost ? '/' : `/${repoName}/`;
       document.head.appendChild(base);
@@ -25,13 +26,13 @@
     <!-- [수정 금지] 스타일시트 불러오기(절대주소) -->
     <link rel="stylesheet" href="/common/style/p5js-template.css" />
     <!-- [수정 금지] base 태그 무효화 -->
-    <script>
+    <!-- <script>
       const isBaseExist = document.querySelector('base');
       if (isBaseExist) {
         isBaseExist.remove();
         console.log(`p5js-template: base 태그가 제거되었습니다.`);
       }
-    </script>
+    </script> -->
     <!-- [수정 금지] Material Symbols 불러오기 -->
     <link
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
