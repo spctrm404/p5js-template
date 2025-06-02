@@ -148,12 +148,11 @@ body {
 }
 
 main {
+  // scroll-snap-type: y mandatory;
   height: 100%;
   overflow-y: scroll;
   scroll-behavior: smooth;
   overscroll-behavior: none;
-
-  // scroll-snap-type: y mandatory;
 }
 
 .material-symbols-outlined {
@@ -257,13 +256,12 @@ main {
 }
 
 .control {
+  // scroll-snap-align: start;
   position: sticky;
   top: 0;
   display: grid;
   grid-template-rows: 3rem 0.5rem 0.5rem 3rem;
   grid-template-columns: 1fr;
-
-  // scroll-snap-align: start;
 
   &[data-full-width='true'] {
     padding-inline: 0;

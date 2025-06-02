@@ -29,8 +29,10 @@ const canvasInObserver = new IntersectionObserver(
     if (entry.isIntersecting) {
       // console.log('Intersecting:', entry.target.id, entry.intersectionRatio);
       if (canvasInPrevState === 'out') {
-        sectionCanvas.scrollIntoView({ behavior: 'smooth' });
-        sectionControl.dataset.atBottom = 'true';
+        setTimeout(() => {
+          sectionCanvas.scrollIntoView({ behavior: 'auto' });
+          sectionControl.dataset.atBottom = 'true';
+        }, 100);
       }
       canvasInPrevState = 'in';
     } else {
@@ -53,8 +55,10 @@ const canvasOutObserver = new IntersectionObserver(
         canvasOutPrevState = 'in';
       } else {
         if (canvasOutPrevState === 'in') {
-          sectionControl.scrollIntoView({ behavior: 'smooth' });
-          sectionControl.dataset.atBottom = 'false';
+          setTimeout(() => {
+            sectionControl.scrollIntoView({ behavior: 'auto' });
+            sectionControl.dataset.atBottom = 'false';
+          }, 100);
         }
         canvasOutPrevState = 'out';
       }
