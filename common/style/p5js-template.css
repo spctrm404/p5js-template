@@ -195,6 +195,12 @@ body {
   font-family: "Pretendard Variable", sans-serif;
   color: var(--on-bg);
   background-color: var(--bg);
+  font-size: 1.125rem;
+}
+@media (width < 37.5rem) {
+  body {
+    font-size: 1rem;
+  }
 }
 
 main {
@@ -379,12 +385,6 @@ main {
 .information {
   position: relative;
   z-index: 1;
-  font-size: 1.125rem;
-}
-@media (width < 52.5rem) {
-  .information {
-    font-size: 1rem;
-  }
 }
 .information__container {
   display: grid;
@@ -420,10 +420,8 @@ main {
   line-height: round(1.2em, 0.25rem);
   padding-block: calc(0.5 * (round(up, 1cap, 0.25rem) - 1cap));
 }
-@media (width < 52.5rem) {
+@media (width < 37.5rem) {
   .information__label__title {
-    padding-top: calc(0.75rem - 0.5cap);
-    padding-bottom: calc(0.75rem - 0.5cap);
     font-size: 1.6018066406rem;
   }
 }
@@ -434,7 +432,7 @@ main {
   line-height: round(1em, 0.25rem);
   padding-block: calc(0.5 * (round(up, 1cap, 0.25rem) - 1cap));
 }
-@media (width < 52.5rem) {
+@media (width < 37.5rem) {
   .information__label__artist {
     font-size: 1.265625rem;
   }
@@ -460,14 +458,12 @@ main {
   text-box: trim-both cap alphabetic;
   margin-top: round(0.75lh, 4px);
   word-break: keep-all;
-  font-size: 1.125rem;
   line-height: round(1.5em, 0.25rem);
   padding-block: calc(0.5 * (round(up, 1cap, 0.25rem) - 1cap));
 }
 @media (width < 52.5rem) {
   .information__description p {
     word-break: normal;
-    font-size: 1rem;
   }
 }
 .information__description p:first-of-type {
@@ -509,7 +505,7 @@ main {
   line-height: round(1em, 0.25rem);
   padding-block: calc(0.5 * (round(up, 1cap, 0.25rem) - 1cap));
 }
-@media (width < 52.5rem) {
+@media (width < 37.5rem) {
   .information__reference__title {
     font-size: 1.423828125rem;
   }
@@ -517,13 +513,7 @@ main {
 .information__reference ol {
   padding-left: 2em;
   margin-top: round(1lh, 0.25rem);
-  font-size: 1.125rem;
   line-height: round(1.5em, 0.25rem);
-}
-@media (width < 52.5rem) {
-  .information__reference ol {
-    font-size: 1rem;
-  }
 }
 .information__reference ol li {
   text-box: trim-both cap alphabetic;

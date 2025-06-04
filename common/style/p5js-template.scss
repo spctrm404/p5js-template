@@ -214,6 +214,10 @@ body {
   font-family: 'Pretendard Variable', sans-serif;
   color: var(--on-bg);
   background-color: var(--bg);
+  @include font-size(1);
+  @media (width < $bp-s) {
+    @include font-size(0);
+  }
 }
 
 main {
@@ -406,10 +410,6 @@ main {
 .information {
   position: relative;
   z-index: 1;
-  @include font-size(1);
-  @media (width < $bp-m) {
-    @include font-size(0);
-  }
 
   &__container {
     display: grid;
@@ -442,9 +442,7 @@ main {
       @include font-size(9);
       @include line-height-multiply-of(1.2);
       @include padding-multiply-of;
-      @media (width < $bp-m) {
-        padding-top: calc(0.75rem - 0.5cap);
-        padding-bottom: calc(0.75rem - 0.5cap);
+      @media (width < $bp-s) {
         @include font-size(4);
       }
     }
@@ -455,7 +453,7 @@ main {
       @include font-size(5);
       @include line-height-multiply-of(1);
       @include padding-multiply-of;
-      @media (width < $bp-m) {
+      @media (width < $bp-s) {
         @include font-size(2);
       }
     }
@@ -478,12 +476,10 @@ main {
       text-box: trim-both cap alphabetic;
       margin-top: calc(round(0.75lh, 4px));
       word-break: keep-all;
-      @include font-size(1);
       @include line-height-multiply-of(1.5);
       @include padding-multiply-of;
       @media (width < $bp-m) {
         word-break: normal;
-        @include font-size(0);
       }
 
       &:first-of-type {
@@ -522,7 +518,7 @@ main {
       @include font-size(7);
       @include line-height-multiply-of(1);
       @include padding-multiply-of;
-      @media (width < $bp-m) {
+      @media (width < $bp-s) {
         @include font-size(3);
       }
     }
@@ -530,11 +526,7 @@ main {
     ol {
       padding-left: 2em;
       margin-top: calc(round(1lh, 0.25rem));
-      @include font-size(1);
       @include line-height-multiply-of(1.5);
-      @media (width < $bp-m) {
-        @include font-size(0);
-      }
 
       li {
         text-box: trim-both cap alphabetic;
