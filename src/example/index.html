@@ -283,7 +283,8 @@
           : ref.title;
 
         const li = document.createElement('li');
-        li.innerHTML = `${authorLine} <i>${titleHTML}</i>. ${publisher}, ${year} ${accessed}.`;
+        li.innerHTML = `${authorLine} <i>${titleHTML}</i>. ${publisher}, ${year}${accessed}.`;
+
         ol.appendChild(li);
       });
     </script>
