@@ -59,16 +59,14 @@
       <section
         id="section-canvas"
         class="section section--canvas canvas"
-        data-full-width="true"
+        data-full-width="false"
       >
-        <div id="canvas-container" class="container canvas__container"></div>
+        <div class="container canvas__container">
+          <div id="canvas-container"></div>
+        </div>
       </section>
-      <section
-        id="section-control"
-        class="section section--control control"
-        data-at-bottom="true"
-      >
-        <div class="container control__container control__container--header">
+      <section id="section-control" class="section section--control control">
+        <div class="container control__container control__container">
           <div class="control__label">
             <div class="control__label__title">여기 작품제목이 들어갑니다.</div>
             <div class="control__label__artist">손우성</div>
@@ -76,47 +74,33 @@
           <div class="control__paging">
             <button
               id="button-prev"
-              class="button control__button control__button--prev"
-            >
-              <span class="button__icon material-symbols-outlined"
-                >arrow_back_ios_new</span
-              >
-              <span class="button__label">to previous</span>
-            </button>
+              class="icon-button control__button control__button--prev"
+              data-icon="arrow_back_ios_new"
+              aria-label="to previous"
+            ></button>
             <button
               id="button-next"
-              class="button control__button control__button--next"
-            >
-              <span class="button__icon material-symbols-outlined"
-                >arrow_forward_ios</span
-              >
-              <span class="button__label">to next</span>
-            </button>
+              class="icon-button control__button control__button--next"
+              data-icon="arrow_forward_ios"
+              aria-label="to next"
+            ></button>
             <button
               id="button-list"
-              class="button control__button control__button--list"
-            >
-              <span class="button__icon material-symbols-outlined"
-                >grid_view</span
-              >
-              <span class="button__label">to list</span>
-            </button>
+              class="icon-button control__button control__button--list"
+              data-icon="grid_view"
+              aria-label="to list"
+            ></button>
           </div>
           <div class="control__scroll">
             <button
               id="button-scroll"
-              class="button control__button control__button--scroll"
-            >
-              <span class="button__icon material-symbols-outlined"
-                >arrow_drop_down</span
-              >
-              <span class="button__label">to list</span>
-            </button>
+              class="icon-button control__button control__button--scroll"
+              data-icon="arrow_drop_down"
+              aria-label="toggle description"
+              data-scroll="down"
+            ></button>
           </div>
         </div>
-        <div
-          class="container control__container control__container--footer"
-        ></div>
       </section>
       <section
         id="section-information"

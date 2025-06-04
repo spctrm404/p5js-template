@@ -20,64 +20,66 @@ function disableScroll(elem) {
   );
 }
 
-disableScroll(sectionCanvas);
-disableScroll(sectionControl);
+// disableScroll(sectionCanvas);
+// disableScroll(sectionControl);
 
-let canvasInPrevState = 'in';
-const canvasInObserver = new IntersectionObserver(
-  ([entry]) => {
-    if (entry.isIntersecting) {
-      // console.log('Intersecting:', entry.target.id, entry.intersectionRatio);
-      if (canvasInPrevState === 'out') {
-        setTimeout(() => {
-          sectionCanvas.scrollIntoView({ behavior: 'auto' });
-          sectionControl.dataset.atBottom = 'true';
-        }, 100);
-      }
-      canvasInPrevState = 'in';
-    } else {
-      // console.log('NotIntersecting:', entry.target.id, entry.intersectionRatio);
-      canvasInPrevState = 'out';
-    }
-  },
-  {
-    threshold: [0, 1],
-    rootMargin: '-4px 0px 0px 0px',
-  }
-);
-canvasInObserver.observe(sectionCanvas);
+// let canvasInPrevState = 'in';
+// const canvasInObserver = new IntersectionObserver(
+//   ([entry]) => {
+//     if (entry.isIntersecting) {
+//       // console.log('Intersecting:', entry.target.id, entry.intersectionRatio);
+//       if (canvasInPrevState === 'out') {
+//         setTimeout(() => {
+//           sectionCanvas.scrollIntoView({ behavior: 'auto' });
+//           sectionControl.dataset.atBottom = 'true';
+//         }, 100);
+//       }
+//       canvasInPrevState = 'in';
+//     } else {
+//       // console.log('NotIntersecting:', entry.target.id, entry.intersectionRatio);
+//       canvasInPrevState = 'out';
+//     }
+//   },
+//   {
+//     threshold: [0, 1],
+//     rootMargin: '-4px 0px 0px 0px',
+//   }
+// );
+// canvasInObserver.observe(sectionCanvas);
 
-let canvasOutPrevState = 'in';
-const canvasOutObserver = new IntersectionObserver(
-  ([entry]) => {
-    if (entry.isIntersecting) {
-      if (entry.intersectionRatio === 1) {
-        canvasOutPrevState = 'in';
-      } else {
-        if (canvasOutPrevState === 'in') {
-          setTimeout(() => {
-            sectionControl.scrollIntoView({ behavior: 'auto' });
-            sectionControl.dataset.atBottom = 'false';
-          }, 100);
-        }
-        canvasOutPrevState = 'out';
-      }
-    }
-  },
-  {
-    threshold: [0, 1],
-    rootMargin: '0px 0px 0px 0px',
-  }
-);
-canvasOutObserver.observe(sectionCanvas);
+// let canvasOutPrevState = 'in';
+// const canvasOutObserver = new IntersectionObserver(
+//   ([entry]) => {
+//     if (entry.isIntersecting) {
+//       if (entry.intersectionRatio === 1) {
+//         canvasOutPrevState = 'in';
+//       } else {
+//         if (canvasOutPrevState === 'in') {
+//           setTimeout(() => {
+//             sectionControl.scrollIntoView({ behavior: 'auto' });
+//             sectionControl.dataset.atBottom = 'false';
+//           }, 100);
+//         }
+//         canvasOutPrevState = 'out';
+//       }
+//     }
+//   },
+//   {
+//     threshold: [0, 1],
+//     rootMargin: '0px 0px 0px 0px',
+//   }
+// );
+// canvasOutObserver.observe(sectionCanvas);
 
 const btnScroll = document.getElementById('button-scroll');
 btnScroll.addEventListener('click', () => {
-  const atBottom = sectionControl.dataset.atBottom === 'true';
-  if (atBottom) {
+  const towardDown = btnScroll.dataset.scroll === 'down';
+  if (towardDown) {
     sectionControl.scrollIntoView({ behavior: 'smooth' });
+    btnScroll.dataset.scroll = 'up';
   } else {
     sectionCanvas.scrollIntoView({ behavior: 'smooth' });
+    btnScroll.dataset.scroll = 'down';
   }
 });
 
