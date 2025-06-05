@@ -5,6 +5,13 @@ const template_sectionInformation = document.getElementById(
   'section-information'
 );
 
+const template_btnScroll = document.getElementById('button-scroll');
+
+let gate = false;
+let gateInitCnt = 0;
+let prevIntersectionStateA = false;
+let prevIntersectionStateB = false;
+
 function disableScroll(elem) {
   elem.addEventListener(
     'wheel',
@@ -21,61 +28,54 @@ function disableScroll(elem) {
     { passive: false }
   );
 }
+function scrollToTop(timeoutDuration = 1000) {
+  template_sectionCanvas.scrollIntoView({ behavior: 'smooth' });
+  gate = false;
+  setTimeout(() => {
+    gate = true;
+  }, timeoutDuration);
+}
+function scrollToBottom(timeoutDuration = 1000) {
+  template_sectionControl.scrollIntoView({ behavior: 'smooth' });
+  gate = false;
+  setTimeout(() => {
+    gate = true;
+  }, timeoutDuration);
+}
 
 disableScroll(template_sectionCanvas);
 disableScroll(template_sectionControl);
 
-let gate = false;
-let cnt = 0;
-
-let prevA = false;
 const intersectionObserverA = new IntersectionObserver(
   ([entry]) => {
     if (entry.isIntersecting) {
-      if (!prevA && gate) scrollToTop();
-      prevA = true;
-      cnt++;
-      if (cnt === 2) gate = true;
+      if (!prevIntersectionStateA && gate) scrollToTop();
+      gateInitCnt++;
+      if (gateInitCnt === 2) gate = true;
     } else {
-      if (prevB) template_btnScroll.dataset.scroll = 'up';
-      prevA = false;
+      if (prevIntersectionStateB) template_btnScroll.dataset.scroll = 'up';
     }
+    prevIntersectionStateA = entry.isIntersecting;
   },
   { threshold: [0, 1], rootMargin: '-2px 0px 0px 0px' }
 );
 intersectionObserverA.observe(template_sectionCanvas);
 
-let prevB = false;
 const intersectionObserverB = new IntersectionObserver(
   ([entry]) => {
     if (entry.isIntersecting) {
-      if (prevA) template_btnScroll.dataset.scroll = 'down';
-      prevB = true;
-      cnt++;
-      if (cnt === 2) gate = true;
-    } else {
-      prevB = false;
+      if (prevIntersectionStateA) {
+        if (gate) scrollToBottom();
+        template_btnScroll.dataset.scroll = 'down';
+      }
+      gateInitCnt++;
+      if (gateInitCnt === 2) gate = true;
     }
+    prevIntersectionStateB = entry.isIntersecting;
   },
   { threshold: [0, 1], rootMargin: '0px 0px -2px 0px' }
 );
 intersectionObserverB.observe(template_sectionCanvas);
-
-const template_btnScroll = document.getElementById('button-scroll');
-function scrollToTop() {
-  template_sectionCanvas.scrollIntoView({ behavior: 'smooth' });
-  gate = false;
-  setTimeout(() => {
-    gate = true;
-  }, 500);
-}
-function scrollToBottom() {
-  template_sectionControl.scrollIntoView({ behavior: 'smooth' });
-  gate = false;
-  setTimeout(() => {
-    gate = true;
-  }, 500);
-}
 
 template_btnScroll.addEventListener('click', () => {
   const towardDown = template_btnScroll.dataset.scroll === 'down';
