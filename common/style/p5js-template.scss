@@ -514,7 +514,6 @@ main {
     &__title {
       text-box: trim-both cap alphabetic;
       font-weight: 600;
-      line-height: 1;
       @include font-size(7);
       @include line-height-multiply-of(1);
       @include padding-multiply-of;
@@ -526,6 +525,7 @@ main {
     ol {
       padding-left: 2em;
       margin-top: calc(round(1lh, 0.25rem));
+      margin-bottom: 0;
       @include line-height-multiply-of(1.5);
 
       li {

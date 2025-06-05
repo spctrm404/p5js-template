@@ -1,7 +1,9 @@
-const main = document.getElementById('main');
-const sectionCanvas = document.getElementById('section-canvas');
-const sectionControl = document.getElementById('section-control');
-const sectionInformation = document.getElementById('section-information');
+const template_main = document.getElementById('main');
+const template_sectionCanvas = document.getElementById('section-canvas');
+const template_sectionControl = document.getElementById('section-control');
+const template_sectionInformation = document.getElementById(
+  'section-information'
+);
 
 function disableScroll(elem) {
   elem.addEventListener(
@@ -20,8 +22,20 @@ function disableScroll(elem) {
   );
 }
 
-// disableScroll(sectionCanvas);
-// disableScroll(sectionControl);
+// disableScroll(template_sectionCanvas);
+// disableScroll(template_sectionControl);
+
+const iObserverA = new IntersectionObserver(
+  ([entry]) => {
+    if (entry.isIntersecting) {
+      console.log('Intersecting:');
+    } else {
+      console.log('NotIntersecting:');
+    }
+  },
+  { threshold: [0, 1] }
+);
+iObserverA.observe(template_sectionCanvas);
 
 // let canvasInPrevState = 'in';
 // const canvasInObserver = new IntersectionObserver(
@@ -71,15 +85,15 @@ function disableScroll(elem) {
 // );
 // canvasOutObserver.observe(sectionCanvas);
 
-const btnScroll = document.getElementById('button-scroll');
-btnScroll.addEventListener('click', () => {
-  const towardDown = btnScroll.dataset.scroll === 'down';
+const template_btnScroll = document.getElementById('button-scroll');
+template_btnScroll.addEventListener('click', () => {
+  const towardDown = template_btnScroll.dataset.scroll === 'down';
   if (towardDown) {
-    sectionControl.scrollIntoView({ behavior: 'smooth' });
-    btnScroll.dataset.scroll = 'up';
+    template_sectionControl.scrollIntoView({ behavior: 'smooth' });
+    template_btnScroll.dataset.scroll = 'up';
   } else {
-    sectionCanvas.scrollIntoView({ behavior: 'smooth' });
-    btnScroll.dataset.scroll = 'down';
+    template_sectionCanvas.scrollIntoView({ behavior: 'smooth' });
+    template_btnScroll.dataset.scroll = 'down';
   }
 });
 
