@@ -22,20 +22,69 @@ function disableScroll(elem) {
   );
 }
 
-// disableScroll(template_sectionCanvas);
-// disableScroll(template_sectionControl);
+disableScroll(template_sectionCanvas);
+disableScroll(template_sectionControl);
 
-const iObserverA = new IntersectionObserver(
+let gate = false;
+let cnt = 0;
+
+let prevA = false;
+const intersectionObserverA = new IntersectionObserver(
   ([entry]) => {
     if (entry.isIntersecting) {
-      console.log('Intersecting:');
+      if (!prevA && gate) scrollToTop();
+      prevA = true;
+      cnt++;
+      if (cnt === 2) gate = true;
     } else {
-      console.log('NotIntersecting:');
+      if (prevB) template_btnScroll.dataset.scroll = 'up';
+      prevA = false;
     }
   },
-  { threshold: [0, 1] }
+  { threshold: [0, 1], rootMargin: '-2px 0px 0px 0px' }
 );
-iObserverA.observe(template_sectionCanvas);
+intersectionObserverA.observe(template_sectionCanvas);
+
+let prevB = false;
+const intersectionObserverB = new IntersectionObserver(
+  ([entry]) => {
+    if (entry.isIntersecting) {
+      if (prevA) template_btnScroll.dataset.scroll = 'down';
+      prevB = true;
+      cnt++;
+      if (cnt === 2) gate = true;
+    } else {
+      prevB = false;
+    }
+  },
+  { threshold: [0, 1], rootMargin: '0px 0px -2px 0px' }
+);
+intersectionObserverB.observe(template_sectionCanvas);
+
+const template_btnScroll = document.getElementById('button-scroll');
+function scrollToTop() {
+  template_sectionCanvas.scrollIntoView({ behavior: 'smooth' });
+  gate = false;
+  setTimeout(() => {
+    gate = true;
+  }, 500);
+}
+function scrollToBottom() {
+  template_sectionControl.scrollIntoView({ behavior: 'smooth' });
+  gate = false;
+  setTimeout(() => {
+    gate = true;
+  }, 500);
+}
+
+template_btnScroll.addEventListener('click', () => {
+  const towardDown = template_btnScroll.dataset.scroll === 'down';
+  if (towardDown) {
+    scrollToBottom();
+  } else {
+    scrollToTop();
+  }
+});
 
 // let canvasInPrevState = 'in';
 // const canvasInObserver = new IntersectionObserver(
@@ -84,18 +133,6 @@ iObserverA.observe(template_sectionCanvas);
 //   }
 // );
 // canvasOutObserver.observe(sectionCanvas);
-
-const template_btnScroll = document.getElementById('button-scroll');
-template_btnScroll.addEventListener('click', () => {
-  const towardDown = template_btnScroll.dataset.scroll === 'down';
-  if (towardDown) {
-    template_sectionControl.scrollIntoView({ behavior: 'smooth' });
-    template_btnScroll.dataset.scroll = 'up';
-  } else {
-    template_sectionCanvas.scrollIntoView({ behavior: 'smooth' });
-    template_btnScroll.dataset.scroll = 'down';
-  }
-});
 
 /**
  * 지정된 맞춤 방식에 따라 캔버스를 컨테이너에 최적으로 맞추기 위한 크기를 반환.
