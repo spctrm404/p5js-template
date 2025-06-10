@@ -339,7 +339,7 @@ main {
       max-width: 100%;
     }
     @at-root .canvas[data-full-width='true']
-        + .control:has(#button-scroll[data-scroll='up'])
+        + .control:has(#button-scroll[data-toward='up'])
         & {
       max-width: $bp-xl;
     }
@@ -359,7 +359,7 @@ main {
     justify-content: center;
     opacity: 1;
     transition: opacity 200ms ease-in;
-    @at-root .control:has(#button-scroll[data-scroll='up']) & {
+    @at-root .control:has(#button-scroll[data-toward='up']) & {
       opacity: 0;
     }
     @media (width < $bp-s) {
@@ -381,7 +381,7 @@ main {
       @include font-size(0);
     }
 
-    &__artist {
+    &__author {
       font-weight: 500;
       @include font-size(-1);
     }
@@ -399,7 +399,7 @@ main {
       grid-column: 1 / span 1;
       opacity: 0;
       transform: translate(-0.75rem, 0%);
-      @at-root .control:has(#button-scroll[data-scroll='up']) & {
+      @at-root .control:has(#button-scroll[data-toward='up']) & {
         opacity: 1;
         transform: translate(-0.75rem, 0%);
       }
@@ -427,7 +427,7 @@ main {
       transform: translate(0.75rem, 0%) rotate(0deg);
       transition: transform 200ms ease-in;
 
-      &[data-scroll='up'] {
+      &[data-toward='up'] {
         transform: translate(0.75rem, 0%) rotate(180deg);
       }
     }
@@ -486,7 +486,7 @@ main {
       }
     }
 
-    &__artist {
+    &__author {
       margin-top: calc(round(1lh, 0.25rem));
       font-weight: 500;
       @include font-size(5);

@@ -322,7 +322,7 @@ main {
   max-width: 100%;
 }
 
-.canvas[data-full-width=true] + .control:has(#button-scroll[data-scroll=up]) .control__container {
+.canvas[data-full-width=true] + .control:has(#button-scroll[data-toward=up]) .control__container {
   max-width: 100rem;
 }
 
@@ -343,7 +343,7 @@ main {
   opacity: 1;
   transition: opacity 200ms ease-in;
 }
-.control:has(#button-scroll[data-scroll=up]) .control__label {
+.control:has(#button-scroll[data-toward=up]) .control__label {
   opacity: 0;
 }
 
@@ -365,7 +365,7 @@ main {
   font-weight: 600;
   font-size: 1rem;
 }
-.control__label__artist {
+.control__label__author {
   font-weight: 500;
   font-size: 0.8888888889rem;
 }
@@ -384,7 +384,7 @@ main {
     opacity: 0;
     transform: translate(-0.75rem, 0%);
   }
-  .control:has(#button-scroll[data-scroll=up]) .control__paging {
+  .control:has(#button-scroll[data-toward=up]) .control__paging {
     opacity: 1;
     transform: translate(-0.75rem, 0%);
   }
@@ -405,7 +405,7 @@ main {
   transform: translate(0.75rem, 0%) rotate(0deg);
   transition: transform 200ms ease-in;
 }
-.control__button--scroll[data-scroll=up] {
+.control__button--scroll[data-toward=up] {
   transform: translate(0.75rem, 0%) rotate(180deg);
 }
 .control__scroll {
@@ -462,7 +462,7 @@ main {
     font-size: 1.6018066406rem;
   }
 }
-.information__label__artist {
+.information__label__author {
   margin-top: round(1lh, 0.25rem);
   font-weight: 500;
   font-size: 1.8020324707rem;
@@ -470,7 +470,7 @@ main {
   padding-block: calc(0.5 * (round(up, 1cap, 0.25rem) - 1cap));
 }
 @media (width < 37.5rem) {
-  .information__label__artist {
+  .information__label__author {
     font-size: 1.265625rem;
   }
 }
