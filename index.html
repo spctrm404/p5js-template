@@ -18,9 +18,12 @@
       crossorigin
       href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
     />
-    <link rel="stylesheet" href="./common/style/p5js-template.css" />
+    <link rel="stylesheet" href="./common/P5jsTemplate/p5js-template.css" />
 
-    <script src="./common/script/p5js-template/" defer></script>
+    <script type="module">
+      import { P5jsTemplate } from './common/P5jsTemplate/index.js';
+      window.P5jsTemplate = P5jsTemplate;
+    </script>
 
     <!-- ∨○○○○ [수정 필수] ○○○○∨ -->
     <script src="https://cdn.jsdelivr.net/npm/p5@2.0.1/lib/p5.js"></script>

@@ -1,139 +1,3 @@
-const template_main = document.getElementById('main');
-const template_sectionCanvas = document.getElementById('section-canvas');
-const template_sectionControl = document.getElementById('section-control');
-const template_sectionInformation = document.getElementById(
-  'section-information'
-);
-
-const template_btnScroll = document.getElementById('button-scroll');
-
-let gate = false;
-let gateInitCnt = 0;
-let prevIntersectionStateA = false;
-let prevIntersectionStateB = false;
-
-function disableScroll(elem) {
-  elem.addEventListener(
-    'wheel',
-    (e) => {
-      e.preventDefault();
-    },
-    { passive: false }
-  );
-  elem.addEventListener(
-    'touchmove',
-    (e) => {
-      e.preventDefault();
-    },
-    { passive: false }
-  );
-}
-function scrollToTop(timeoutDuration = 1000) {
-  template_sectionCanvas.scrollIntoView({ behavior: 'smooth' });
-  gate = false;
-  setTimeout(() => {
-    gate = true;
-  }, timeoutDuration);
-}
-function scrollToBottom(timeoutDuration = 1000) {
-  template_sectionControl.scrollIntoView({ behavior: 'smooth' });
-  gate = false;
-  setTimeout(() => {
-    gate = true;
-  }, timeoutDuration);
-}
-
-disableScroll(template_sectionCanvas);
-disableScroll(template_sectionControl);
-
-const intersectionObserverA = new IntersectionObserver(
-  ([entry]) => {
-    if (entry.isIntersecting) {
-      if (!prevIntersectionStateA && gate) scrollToTop();
-      gateInitCnt++;
-      if (gateInitCnt === 2) gate = true;
-    } else {
-      if (prevIntersectionStateB) template_btnScroll.dataset.scroll = 'up';
-    }
-    prevIntersectionStateA = entry.isIntersecting;
-  },
-  { threshold: [0, 1], rootMargin: '-2px 0px 0px 0px' }
-);
-intersectionObserverA.observe(template_sectionCanvas);
-
-const intersectionObserverB = new IntersectionObserver(
-  ([entry]) => {
-    if (entry.isIntersecting) {
-      if (prevIntersectionStateA) {
-        if (gate) scrollToBottom();
-        template_btnScroll.dataset.scroll = 'down';
-      }
-      gateInitCnt++;
-      if (gateInitCnt === 2) gate = true;
-    }
-    prevIntersectionStateB = entry.isIntersecting;
-  },
-  { threshold: [0, 1], rootMargin: '0px 0px -2px 0px' }
-);
-intersectionObserverB.observe(template_sectionCanvas);
-
-template_btnScroll.addEventListener('click', () => {
-  const towardDown = template_btnScroll.dataset.scroll === 'down';
-  if (towardDown) {
-    scrollToBottom();
-  } else {
-    scrollToTop();
-  }
-});
-
-// let canvasInPrevState = 'in';
-// const canvasInObserver = new IntersectionObserver(
-//   ([entry]) => {
-//     if (entry.isIntersecting) {
-//       // console.log('Intersecting:', entry.target.id, entry.intersectionRatio);
-//       if (canvasInPrevState === 'out') {
-//         setTimeout(() => {
-//           sectionCanvas.scrollIntoView({ behavior: 'auto' });
-//           sectionControl.dataset.atBottom = 'true';
-//         }, 100);
-//       }
-//       canvasInPrevState = 'in';
-//     } else {
-//       // console.log('NotIntersecting:', entry.target.id, entry.intersectionRatio);
-//       canvasInPrevState = 'out';
-//     }
-//   },
-//   {
-//     threshold: [0, 1],
-//     rootMargin: '-4px 0px 0px 0px',
-//   }
-// );
-// canvasInObserver.observe(sectionCanvas);
-
-// let canvasOutPrevState = 'in';
-// const canvasOutObserver = new IntersectionObserver(
-//   ([entry]) => {
-//     if (entry.isIntersecting) {
-//       if (entry.intersectionRatio === 1) {
-//         canvasOutPrevState = 'in';
-//       } else {
-//         if (canvasOutPrevState === 'in') {
-//           setTimeout(() => {
-//             sectionControl.scrollIntoView({ behavior: 'auto' });
-//             sectionControl.dataset.atBottom = 'false';
-//           }, 100);
-//         }
-//         canvasOutPrevState = 'out';
-//       }
-//     }
-//   },
-//   {
-//     threshold: [0, 1],
-//     rootMargin: '0px 0px 0px 0px',
-//   }
-// );
-// canvasOutObserver.observe(sectionCanvas);
-
 /**
  * 지정된 맞춤 방식에 따라 캔버스를 컨테이너에 최적으로 맞추기 위한 크기를 반환.
  *
@@ -203,7 +67,7 @@ function getFitSize(canvasSize, containerSize, canvasFit = 'contain') {
  *
  * @param {number} width - 캔버스의 기준 너비(픽셀, 양의 정수).
  * @param {number} height - 캔버스의 기준 높이(픽셀, 양의 정수).
- * @param {string} containerId - 캔버스를 넣을 컨테이너 요소의 id 문자열.
+ * @param {string} containerSelector - 캔버스를 넣을 컨테이너 요소의 선택자 문자열.
  * @param {'contain' | 'fill' | 'cover' | 'none' | 'scale-down'} [canvasFit='none'] - 캔버스가 컨테이너에 맞춰지는 방식:
  * - 'contain': 캔버스의 비율을 유지하면서 컨테이너 안에 완전히 들어가도록 크기를 조정.
  * - 'fill': 캔버스의 비율을 무시하고 컨테이너의 크기에 맞춤(staticCoordinate가 true일 경우 이미지가 왜곡됨).
@@ -216,7 +80,7 @@ function getFitSize(canvasSize, containerSize, canvasFit = 'contain') {
 function createResponsiveCanvas(
   width,
   height,
-  containerId,
+  containerSelector,
   canvasFit = 'none',
   staticCoordinate = true
 ) {
@@ -228,16 +92,16 @@ function createResponsiveCanvas(
     );
     return;
   }
-  if (typeof containerId !== 'string') {
+  if (typeof containerSelector !== 'string') {
     console.error(
-      `@${functionName}(): 3번째 매개변수 containerId는 캔버스의 부모 요소를 지목하는 id여야합니다.`
+      `@${functionName}(): 3번째 매개변수 containerSelector는 캔버스의 부모 요소를 지목하는 선택자여야합니다.`
     );
     return;
   } else {
-    container = document.getElementById(containerId);
+    container = document.querySelector(containerSelector);
     if (!container) {
       console.error(
-        `@${functionName}(): "${containerId}"와 일치하는 HTML 요소가 없습니다. 3번째 매개변수 containerId를 확인하세요.`
+        `@${functionName}(): "${containerSelector}"와 일치하는 HTML 요소가 없습니다. 3번째 매개변수 containerSelector를 확인하세요.`
       );
       return;
     }
@@ -294,7 +158,7 @@ function createResponsiveCanvas(
   console.log(
     `@${functionName}(): 캔버스가 생성되었습니다.
 - 캔버스 크기: ${finalSize.width}x${finalSize.height}px
-- 컨테이너: ${containerId}
+- 컨테이너: ${container}
 - 캔버스 맞춤 방식: ${canvasFit}
 - 고정 좌표계: ${staticCoordinate}`
   );
@@ -311,21 +175,23 @@ function createResponsiveCanvas(
  * @returns {boolean} 값이 숫자, 문자열, 또는 숫자 배열이면 true, 그렇지 않으면 false.
  */
 function isColor(value) {
-  return (
+  if (
     typeof value === 'number' ||
-    typeof value === 'string' ||
     (Array.isArray(value) &&
       value.length > 0 &&
       value.every((e) => typeof e === 'number'))
-  );
+  ) {
+    return true;
+  }
+  return CSS.supports('color', value);
 }
 
 /**
  * 캔버스에 기준선, 중앙선, 경계선을 포함한 참조 그리드를 그립니다.
  *
- * @param {(number|string|Array)} [boundaryColour='#000000'] - 경계선의 색상. 숫자, 색상 문자열, 숫자 배열을 허용.
- * @param {(number|string|Array)} [gridColour='#888888'] - 격자선의 색상. 숫자, 색상 문자열, 숫자 배열을 허용.
- * @param {(number|string|Array)} [centerColour='red'] - 중심선의 색상. 숫자, 색상 문자열, 숫자 배열을 허용.
+ * @param {(number | string | number[])} [boundaryColour='#000000'] - 경계선의 색상. 숫자, 색상 문자열, 숫자 배열을 허용.
+ * @param {(number | string | number[])} [gridColour='#888888'] - 격자선의 색상. 숫자, 색상 문자열, 숫자 배열을 허용.
+ * @param {(number | string | number[])} [centerColour='red'] - 중심선의 색상. 숫자, 색상 문자열, 숫자 배열을 허용.
  * @param {number} [gridSize=20] - 그리드 간격(픽셀).
  */
 function drawReferenceGrid(
@@ -341,7 +207,7 @@ function drawReferenceGrid(
     !isColor(centerColour)
   ) {
     console.error(
-      `@${functionName}(): 모든 매개변수는 색상을 나타내는 숫자, 숫자 배열 혹은 문자열이어야 합니다. 예: 51, [255, 204, 0, 127], '#A251FA', 'red', 'rgba(100%, 0%, 100%, 0.5)'`
+      `@${functionName}(): 1~3번째 매개변수는 색상을 나타내는 숫자, 숫자 배열 혹은 CSS에서 색상을 특정하는 문자열이어야 합니다.`
     );
     return;
   }
@@ -361,3 +227,5 @@ function drawReferenceGrid(
   strokeWeight(gridSize);
   rect(0, 0, width, height);
 }
+
+export { createResponsiveCanvas, drawReferenceGrid };
