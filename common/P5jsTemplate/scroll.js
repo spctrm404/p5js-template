@@ -100,7 +100,7 @@ function observe() {
         gateInitCnt++;
         if (gateInitCnt === 2) gate = true;
       } else {
-        if (prevIntersectionStateB) buttonScroll.dataset.scroll = 'up';
+        if (prevIntersectionStateB) buttonScroll.dataset.toward = 'up';
       }
       prevIntersectionStateA = entry.isIntersecting;
     },
@@ -113,7 +113,7 @@ function observe() {
       if (entry.isIntersecting) {
         if (prevIntersectionStateA) {
           if (gate) scrollToBottom();
-          buttonScroll.dataset.scroll = 'down';
+          buttonScroll.dataset.toward = 'down';
         }
         gateInitCnt++;
         if (gateInitCnt === 2) gate = true;
