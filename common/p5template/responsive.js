@@ -85,13 +85,15 @@
      * - 'none': 크기 조정을 하지 않음.
      * - 'scale-down': 캔버스가 컨테이너보다 클 때만 'contain'과 같은 방식으로 크기를 줄임.
      * @param {boolean} [staticCoordinate=true] - true면 캔버스 좌표계가 확장, 수축되지 않고, 렌더링된 이미지 크기가 확대, 축소됨(확대시 이미지 열화), false면 캔버스 좌표계가 확장, 수축(좌표계 변경에 대응되는 코딩 요구).
+     * @param {P2D | WEBGL} [renderOption= P2D] - p5.js 렌더러 (기본값: P2D)
      * @returns {p5.Renderer | undefined} 생성된 p5.Renderer 객체 또는 오류 시 undefined 반환.
      */
     createResponsiveCanvas(
       width,
       height,
       canvasFit = 'none',
-      staticCoordinate = true
+      staticCoordinate = true,
+      renderOption = P2D
     ) {
       const fnName = 'createResponsiveCanvas';
       if (!Number.isInteger(width) || !Number.isInteger(height)) {
@@ -131,7 +133,11 @@
         width: staticCoordinate ? width : fitWidth,
         height: staticCoordinate ? height : fitHeight,
       };
-      const renderer = createCanvas(finalSize.width, finalSize.height);
+      const renderer = createCanvas(
+        finalSize.width,
+        finalSize.height,
+        renderOption
+      );
       const canvas = renderer.elt;
       renderer.parent(container);
 
