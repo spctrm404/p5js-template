@@ -11,19 +11,24 @@
     prevIntersectionStateB;
 
     constructor(
-      topElemSelector = '#section-canvas',
-      bottomElemSelector = '#section-control',
-      buttonSelector = '#button-scroll'
+      options = {
+        topElemSelector: '#section-canvas',
+        bottomElemSelector: '#section-control',
+        buttonSelector: '#button-scroll',
+      }
     ) {
-      this.topElemSelector = topElemSelector;
-      this.bottomElemSelector = bottomElemSelector;
-      this.buttonSelector = buttonSelector;
+      this.topElemSelector = options.topElemSelector || '#section-canvas';
+      this.bottomElemSelector =
+        options.bottomElemSelector || '#section-control';
+      this.buttonSelector = options.buttonSelector || '#button-scroll';
       this.gate = false;
       this.gateInitCnt = 0;
       this.prevIntersectionStateA = false;
       this.prevIntersectionStateB = false;
 
-      this.run();
+      window.addEventListener('DOMContentLoaded', () => {
+        this.run();
+      });
     }
 
     #disableScroll(elem) {

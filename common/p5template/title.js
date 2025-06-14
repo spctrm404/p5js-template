@@ -9,11 +9,11 @@
     selectorAuthor;
 
     /**
-     * 제목, 디자이너, 연도를 받아 템플릿에 반영.
+     * 작품 제목, 작가 성명, 작품 공개 연도를 받아 템플릿에 반영.
      *
      * @param {string} [title='키스의 고유 조건은 입술끼리 만나야 하고 특별한 기술은 필요치 않다'] - 작품 제목
-     * @param {string} [designer='손우성'] - 디자이너 이름
-     * @param {string} [year='2025'] - 연도
+     * @param {string} [designer='손우성'] - 작가 성명
+     * @param {string} [year='2025'] - 작품 공개 연도
      * @param {Object} [options={ selectorTitle: '.title', selectorAuthor: '.author' }] - 옵션 객체 (선택):
      *   - selectorTitle: 제목 템플릿 요소 선택자 (기본값: '.title')
      *   - selectorAuthor: 저자 템플릿 요소 선택자 (기본값: '.author')
@@ -30,7 +30,9 @@
       this.selectorTitle = options.selectorTitle || '.title';
       this.selectorAuthor = options.selectorAuthor || '.author';
 
-      this.run();
+      window.addEventListener('DOMContentLoaded', () => {
+        this.run();
+      });
     }
 
     #setHtmlTitle() {

@@ -58,7 +58,9 @@
       this.references = references;
       this.olSelector = options.olSelector || '.information__reference ol';
 
-      this.run();
+      window.addEventListener('DOMContentLoaded', () => {
+        this.run();
+      });
     }
 
     #setHtmlBody() {

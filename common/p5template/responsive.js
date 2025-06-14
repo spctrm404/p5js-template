@@ -4,8 +4,8 @@
   class Responsive {
     containerSelector;
 
-    constructor(containerSelector = '#canvas-container') {
-      this.containerSelector = containerSelector;
+    constructor(options = { containerSelector: '#canvas-container' }) {
+      this.containerSelector = options.containerSelector || '#canvas-container';
     }
 
     /**
