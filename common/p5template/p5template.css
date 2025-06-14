@@ -247,9 +247,6 @@ main {
   padding-inline: 5rem;
   margin-inline: auto;
 }
-.container[data-full-width=true] {
-  padding-inline: 0;
-}
 @media (width < 75rem) {
   .container {
     padding-inline: 3.75rem;
@@ -283,6 +280,7 @@ main {
 }
 .canvas[data-full-width=true] .canvas__container {
   max-width: 100%;
+  padding-inline: 0;
 }
 
 #canvas-container {
