@@ -422,6 +422,7 @@ main {
 .information {
   position: relative;
   z-index: 2;
+  min-height: calc(100svh - 7rem);
 }
 .information__container {
   display: grid;

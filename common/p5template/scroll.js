@@ -1,143 +1,111 @@
-let sectionCanvas = document.querySelector('#section-canvas');
-function setSectionCanvas(selector) {
-  const elem = document.querySelector(selector);
-  const functionName = 'setSectionCanvas';
-  if (!elem) {
-    console.error(
-      `@${functionName}(): "${selector}"와 일치하는 HTML 요소가 없습니다. 번째 매개변수 selector를 확인하세요.`
-    );
-    return;
-  }
-  sectionCanvas = elem;
-}
+(function (global) {
+  global.P5Template = global.P5Template || {};
 
-let sectionControl = document.querySelector('#section-control');
-function setSectionControl(selector) {
-  const elem = document.querySelector(selector);
-  const functionName = 'setSectionControl';
-  if (!elem) {
-    console.error(
-      `@${functionName}(): "${selector}"와 일치하는 HTML 요소가 없습니다. 번째 매개변수 selector를 확인하세요.`
-    );
-    return;
-  }
-  sectionControl = elem;
-}
+  class Scroll {
+    topElemSelector;
+    bottomElemSelector;
+    buttonSelector;
+    gate;
+    gateInitCnt;
+    prevIntersectionStateA;
+    prevIntersectionStateB;
 
-let buttonScroll = document.querySelector('#button-scroll');
-function setButtonScroll(selector) {
-  const elem = document.querySelector(selector);
-  const functionName = 'setButtonScroll';
-  if (!elem) {
-    console.error(
-      `@${functionName}(): "${selector}"와 일치하는 HTML 요소가 없습니다. 번째 매개변수 selector를 확인하세요.`
-    );
-    return;
-  }
-  buttonScroll = elem;
-}
+    constructor(
+      topElemSelector = '#section-canvas',
+      bottomElemSelector = '#section-control',
+      buttonSelector = '#button-scroll'
+    ) {
+      this.topElemSelector = topElemSelector;
+      this.bottomElemSelector = bottomElemSelector;
+      this.buttonSelector = buttonSelector;
+      this.gate = false;
+      this.gateInitCnt = 0;
+      this.prevIntersectionStateA = false;
+      this.prevIntersectionStateB = false;
 
-let gate = false;
-let gateInitCnt = 0;
-let prevIntersectionStateA = false;
-let prevIntersectionStateB = false;
-
-/**
- * 지정한 요소의 스크롤을 비활성화.
- * 'wheel' 및 'touchmove' 이벤트의 기본 동작을 막아 스크롤을 방지.
- *
- * @param {HTMLElement} elem - 스크롤을 비활성화할 HTML 요소.
- */
-function disableScroll(elem) {
-  elem.addEventListener(
-    'wheel',
-    (e) => {
-      e.preventDefault();
-    },
-    { passive: false }
-  );
-  elem.addEventListener(
-    'touchmove',
-    (e) => {
-      e.preventDefault();
-    },
-    { passive: false }
-  );
-}
-
-function scrollToTop(timeoutDuration = 1000) {
-  sectionCanvas.scrollIntoView({ behavior: 'smooth' });
-  gate = false;
-  setTimeout(() => {
-    gate = true;
-  }, timeoutDuration);
-}
-
-function scrollToBottom(timeoutDuration = 1000) {
-  sectionControl.scrollIntoView({ behavior: 'smooth' });
-  gate = false;
-  setTimeout(() => {
-    gate = true;
-  }, timeoutDuration);
-}
-
-function registerButtonEvent() {
-  buttonScroll.addEventListener('click', () => {
-    const towardDown = buttonScroll.dataset.toward === 'down';
-    if (towardDown) {
-      scrollToBottom();
-    } else {
-      scrollToTop();
+      this.run();
     }
-  });
-}
 
-function observe() {
-  const intersectionObserverA = new IntersectionObserver(
-    ([entry]) => {
-      if (entry.isIntersecting) {
-        if (!prevIntersectionStateA && gate) scrollToTop();
-        gateInitCnt++;
-        if (gateInitCnt === 2) gate = true;
-      } else {
-        if (prevIntersectionStateB) buttonScroll.dataset.toward = 'up';
-      }
-      prevIntersectionStateA = entry.isIntersecting;
-    },
-    { threshold: [0, 1], rootMargin: '-2px 0px 0px 0px' }
-  );
-  intersectionObserverA.observe(sectionCanvas);
+    #disableScroll(elem) {
+      elem.addEventListener(
+        'wheel',
+        (e) => {
+          e.preventDefault();
+        },
+        { passive: false }
+      );
+      elem.addEventListener(
+        'touchmove',
+        (e) => {
+          e.preventDefault();
+        },
+        { passive: false }
+      );
+    }
 
-  const intersectionObserverB = new IntersectionObserver(
-    ([entry]) => {
-      if (entry.isIntersecting) {
-        if (prevIntersectionStateA) {
-          if (gate) scrollToBottom();
-          buttonScroll.dataset.toward = 'down';
+    #scrollTo(elem, timeoutDuration = 1000) {
+      elem.scrollIntoView({ behavior: 'smooth' });
+      this.gate = false;
+      setTimeout(() => {
+        this.gate = true;
+      }, timeoutDuration);
+    }
+
+    #registerButtonEvent(elem, topElem, bottomElem) {
+      elem.addEventListener('click', () => {
+        const towardDown = elem.dataset.toward === 'down';
+        if (towardDown) {
+          this.#scrollTo(bottomElem);
+        } else {
+          this.#scrollTo(topElem);
         }
-        gateInitCnt++;
-        if (gateInitCnt === 2) gate = true;
-      }
-      prevIntersectionStateB = entry.isIntersecting;
-    },
-    { threshold: [0, 1], rootMargin: '0px 0px -2px 0px' }
-  );
-  intersectionObserverB.observe(sectionCanvas);
-}
+      });
+    }
 
-function init() {
-  disableScroll(sectionCanvas);
-  disableScroll(sectionControl);
-  registerButtonEvent();
-  observe();
-}
+    #observe(topElem, bottomElem, buttonElem) {
+      const intersectionObserverA = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            if (!this.prevIntersectionStateA && this.gate)
+              this.#scrollTo(topElem);
+            this.gateInitCnt++;
+            if (this.gateInitCnt === 2) this.gate = true;
+          } else {
+            if (this.prevIntersectionStateB) buttonElem.dataset.toward = 'up';
+          }
+          this.prevIntersectionStateA = entry.isIntersecting;
+        },
+        { threshold: [0, 1], rootMargin: '-2px 0px 0px 0px' }
+      );
+      intersectionObserverA.observe(topElem);
 
-export {
-  setSectionCanvas,
-  setSectionControl,
-  setButtonScroll,
-  disableScroll,
-  registerButtonEvent,
-  observe,
-  init,
-};
+      const intersectionObserverB = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            if (this.prevIntersectionStateA) {
+              if (this.gate) this.#scrollTo(bottomElem);
+              buttonElem.dataset.toward = 'down';
+            }
+            this.gateInitCnt++;
+            if (this.gateInitCnt === 2) this.gate = true;
+          }
+          this.prevIntersectionStateB = entry.isIntersecting;
+        },
+        { threshold: [0, 1], rootMargin: '0px 0px -2px 0px' }
+      );
+      intersectionObserverB.observe(topElem);
+    }
+
+    run() {
+      const topElem = document.querySelector(this.topElemSelector);
+      const bottomElem = document.querySelector(this.bottomElemSelector);
+      const buttonElem = document.querySelector(this.buttonSelector);
+      this.#disableScroll(topElem);
+      this.#disableScroll(bottomElem);
+      this.#registerButtonEvent(buttonElem, topElem, bottomElem);
+      this.#observe(topElem, bottomElem, buttonElem);
+    }
+  }
+
+  global.P5Template.Scroll = Scroll;
+})(this);

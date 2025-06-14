@@ -1,20 +1,14 @@
-const { Responsive, Scroll, Title, References } = P5jsTemplate;
+const { Responsive, Scroll, Title, References } = P5Template;
 
 function setup() {
-  Responsive.createResponsiveCanvas(
-    800,
-    600,
-    '#canvas-container',
-    'fill',
-    false
-  );
-  Scroll.init();
-  Title.init(
+  new Responsive().createResponsiveCanvas(800, 600, 'contain', true);
+  new Scroll();
+  new Title(
     '키스의 고유 조건은 입술끼리 만나야 하고 특별한 기술은 필요치 않다',
     '손우성',
     '2025'
   );
-  References.init([
+  new References([
     {
       title: 'What was Coding like 40 years ago?',
       authors: ['Daniel Shiffman'],
@@ -46,8 +40,4 @@ function draw() {
   fill('red');
   circle(mouseX, mouseY, 100);
   Responsive.drawReferenceGrid('#ffffff');
-}
-
-function mouseWheel() {
-  console.log('wheel');
 }
